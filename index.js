@@ -41,4 +41,4 @@ hfbot.on('message', async (msg) => {
     }
 })
 
-hfbot.login("NzY1NjEyMjU5MzA4MjA4MTgw.X4XV-w.SWCfbOioRbhxfvQPj7pZbvHR-Go");
+hfbot.login(require("./auth.json")["token"]);
