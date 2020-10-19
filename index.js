@@ -1,12 +1,12 @@
 const { Octokit } = require("@octokit/core");
 const Discord = require("discord.js");
-var hfbot = new Discord.Client()
-var unirest = require('unirest');
+var hfbot = new Discord.Client();
 
 hfbot.once('ready', () => {
     hfbot.user.setActivity("Watching out for :q help")
 	console.log('Ready!');
 });
+
 const octokit = new Octokit({ auth: `` });
 hfbot.on('message', async (msg) => {
     var content = msg.content;
@@ -39,6 +39,7 @@ Send a message with\n\
                     owner = content[1].slice("https://github.com/".length, content[1].length).split("/")[0]
                     repos = content[1].slice("https://github.com/".length, content[1].length).split("/")[1]
                 } else {
+                    console.log('DBG',content)
                     owner = content[1].split('/')[0]
                     repos = content[1].split('/')[1]
                 }
@@ -53,7 +54,8 @@ Send a message with\n\
                 });
                 
                 const topics = resp["data"]["names"];
-                for (var topic of topics)
+                for (var topic of topics) {
+                    console.log(topic)
                     if (topic == "hacktoberfest" || topic == "hacktoberfest2020") {
                         msg.channel.send(`Yep\n`)
                         return;
@@ -61,6 +63,7 @@ Send a message with\n\
                     else {
                         continue;  
                     }
+                }
             break;
         }
     }
