@@ -4,6 +4,10 @@ var hfbot = new Discord.Client();
 
 hfbot.once('ready', () => {
     hfbot.user.setActivity("Watching out for :q help")
+    for (var n of hfbot.guilds.cache)
+    {
+        console.log("i am in",n[1].name)
+    }
 	console.log('Ready!');
 });
 
