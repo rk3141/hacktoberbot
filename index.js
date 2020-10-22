@@ -11,7 +11,7 @@ hfbot.once('ready', () => {
 	console.log('Ready!');
 });
 
-const octokit = new Octokit({ auth: `` });
+const octokit = new Octokit({ auth: `hacktoberbot 1.0` });
 
 function help(message)
 {
@@ -84,4 +84,4 @@ hfbot.on('message', async (msg) => {
     }
 })
 
-hfbot.login(require("./auth.json")["token"]);
+hfbot.login(require("./auth.json")["token"] || process.env.TOKEN);
