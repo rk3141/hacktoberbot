@@ -92,6 +92,7 @@ hfbot.on('message', async (msg) => {
 try {
 var token = require("./auth.json")["token"];
 } catch {
-    token = process.env.TOKEN
+    var token = process.env.TOKEN;
 }
+
 hfbot.login(token);
