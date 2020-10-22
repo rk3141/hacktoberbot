@@ -1,5 +1,6 @@
 const { Octokit } = require("@octokit/core");
 const Discord = require("discord.js");
+const {suggest} = require("./suggest");
 var hfbot = new Discord.Client();
 
 hfbot.once('ready', () => {
@@ -80,6 +81,10 @@ hfbot.on('message', async (msg) => {
                 }
                 msg.channel.send('Nope\n');
             break;
+
+            case "suggest":
+                await suggest(msg)
+                break;
         }
     }
 })
