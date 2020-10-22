@@ -89,4 +89,5 @@ hfbot.on('message', async (msg) => {
     }
 })
 
+
 hfbot.login(require("./auth.json")["token"] || process.env.TOKEN);
