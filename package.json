@@ -20,6 +20,7 @@
   "dependencies": {
     "@octokit/core": "^3.1.2",
     "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
     "node-fetch": "^2.6.1",
     "unirest": "^0.6.0"
   }

@@ -1,21 +1,22 @@
-const { Octokit } = require("@octokit/core");
+const {Octokit} = require("@octokit/core");
 const Discord = require("discord.js");
 const {suggest} = require("./suggest");
-var hfbot = new Discord.Client();
+
+require('dotenv').config()
+
+const hfbot = new Discord.Client();
 
 hfbot.once('ready', () => {
     hfbot.user.setActivity("Watching out for :q help")
-    for (var n of hfbot.guilds.cache)
-    {
-        console.log("i am in",n[1].name)
+    for (let n of hfbot.guilds.cache) {
+        console.log("i am in", n[1].name)
     }
-	console.log('Ready!');
+    console.log('Ready!');
 });
 
-const octokit = new Octokit({ auth: `hacktoberbot 1.0` });
+const octokit = new Octokit({auth: `hacktoberbot 1.0`});
 
-function help(message)
-{
+function help(message) {
     message.channel.send(
         "Hello, I am Hacktoberbot\n\
 Send a message with\n\
@@ -30,18 +31,18 @@ Send a message with\n\
 }
 
 hfbot.on('message', async (msg) => {
-    var content = msg.content;
-    if (content.startsWith(':')) {
-        
-        content = content.slice(1,content.length).split(' ') // Remove the colon and split the rest by ' '
+    let content = msg.content;
 
-        switch(content[0]) {
+    if (content.startsWith(':')) {
+
+        content = content.slice(1, content.length).split(' ') // Remove the colon and split the rest by ' '
+
+        switch (content[0]) {
             case "q":
                 const repo = content[1];
-                if (repo == "help")
-                {
+                if (repo === "help") {
                     help(msg);
-                    
+
                     return;
                 }
 
@@ -49,8 +50,8 @@ hfbot.on('message', async (msg) => {
                     return
                 }
 
-                var owner;
-                var repos;
+                let owner;
+                let repos;
                 if (content[1].startsWith("https")) {
                     owner = content[1].slice("https://github.com/".length, content[1].length).split("/")[0]
                     repos = content[1].slice("https://github.com/".length, content[1].length).split("/")[1]
@@ -58,29 +59,26 @@ hfbot.on('message', async (msg) => {
                     owner = content[1].split('/')[0]
                     repos = content[1].split('/')[1]
                 }
-                var resp = await octokit.request('GET /repos/{owner}/{repo}/topics', { // make an request to the github api
-                        owner: owner,                                                  // You will have to authenticate to have have higher rate
-                        repo: repos,
-                        mediaType: {
+                const resp = await octokit.request('GET /repos/{owner}/{repo}/topics', { // make an request to the github api
+                    owner: owner,                                                  // You will have to authenticate to have have higher rate
+                    repo: repos,
+                    mediaType: {
                         previews: [
                             'mercy'
                         ]
                     }
                 });
-                
+
                 const topics = resp["data"]["names"]; // this is the array of topics
-                for (var topic of topics) { // topics.includes didn't work
+                for (let topic of topics) { // topics.includes didn't work
                     console.log(topic)
-                    if (topic == "hacktoberfest" || topic == "hacktoberfest2020") {
+                    if (topic === "hacktoberfest" || topic === "hacktoberfest2020") {
                         msg.channel.send(`Yep\n`)
                         return;
                     }
-                    else {
-                        continue;  
-                    }
                 }
                 msg.channel.send('Nope\n');
-            break;
+                break;
 
             case "suggest":
                 await suggest(msg)
@@ -89,10 +87,12 @@ hfbot.on('message', async (msg) => {
     }
 })
 
+let token;
+
 try {
-var token = require("./auth.json")["token"];
+    token = require("./auth.json")["token"];
 } catch {
-    var token = process.env.TOKEN;
+    token = process.env.TOKEN;
 }
 
 hfbot.login(token);
