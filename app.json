@@ -1,5 +1,11 @@
 {
   "name": "hacktoberbot",
   "repository": "https://github.com/rishit-khandelwal/hacktoberbot.git",
-  "keywords": ["node", "hacktober"]
+  "keywords": ["node", "hacktober"],
+  "env": {
+    "TOKEN": {
+      "description": "The Bot's token",
+      "required": true
+    }
+  }
 }
