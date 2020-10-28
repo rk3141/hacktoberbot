@@ -4,11 +4,11 @@ const {suggest} = require("./suggest");
 
 require('dotenv').config()
 
-var hfbot = new Discord.Client();
+const hfbot = new Discord.Client();
 
 hfbot.once('ready', () => {
     hfbot.user.setActivity("Watching out for :q help")
-    for (var n of hfbot.guilds.cache) {
+    for (let n of hfbot.guilds.cache) {
         console.log("i am in", n[1].name)
     }
     console.log('Ready!');
@@ -31,7 +31,8 @@ Send a message with\n\
 }
 
 hfbot.on('message', async (msg) => {
-    var content = msg.content;
+    let content = msg.content;
+
     if (content.startsWith(':')) {
 
         content = content.slice(1, content.length).split(' ') // Remove the colon and split the rest by ' '
@@ -39,7 +40,7 @@ hfbot.on('message', async (msg) => {
         switch (content[0]) {
             case "q":
                 const repo = content[1];
-                if (repo == "help") {
+                if (repo === "help") {
                     help(msg);
 
                     return;
@@ -49,8 +50,8 @@ hfbot.on('message', async (msg) => {
                     return
                 }
 
-                var owner;
-                var repos;
+                let owner;
+                let repos;
                 if (content[1].startsWith("https")) {
                     owner = content[1].slice("https://github.com/".length, content[1].length).split("/")[0]
                     repos = content[1].slice("https://github.com/".length, content[1].length).split("/")[1]
@@ -58,7 +59,7 @@ hfbot.on('message', async (msg) => {
                     owner = content[1].split('/')[0]
                     repos = content[1].split('/')[1]
                 }
-                var resp = await octokit.request('GET /repos/{owner}/{repo}/topics', { // make an request to the github api
+                const resp = await octokit.request('GET /repos/{owner}/{repo}/topics', { // make an request to the github api
                     owner: owner,                                                  // You will have to authenticate to have have higher rate
                     repo: repos,
                     mediaType: {
@@ -69,13 +70,11 @@ hfbot.on('message', async (msg) => {
                 });
 
                 const topics = resp["data"]["names"]; // this is the array of topics
-                for (var topic of topics) { // topics.includes didn't work
+                for (let topic of topics) { // topics.includes didn't work
                     console.log(topic)
-                    if (topic == "hacktoberfest" || topic == "hacktoberfest2020") {
+                    if (topic === "hacktoberfest" || topic === "hacktoberfest2020") {
                         msg.channel.send(`Yep\n`)
                         return;
-                    } else {
-                        continue;
                     }
                 }
                 msg.channel.send('Nope\n');
